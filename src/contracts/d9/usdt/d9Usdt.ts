@@ -1,9 +1,9 @@
-import { getD9Api } from "../../connections";
+import { getD9Api } from "../../../connections";
 import type { WeightV2 } from '@polkadot/types/interfaces'
 import { BN, BN_ONE } from "@polkadot/util";
 import { ContractPromise } from '@polkadot/api-contract';
 import { usdtContractABI } from "./d9UsdtAbi";
-import { GasLimits } from "../../types";
+import { GasLimits } from "../../../types";
 
 const MAX_CALL_WEIGHT = new BN(5_000_000_000_000).isub(BN_ONE);
 export const STORAGE_DEPOSIT_LIMIT = null;

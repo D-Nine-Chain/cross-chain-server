@@ -1,4 +1,4 @@
-import { getTronWeb } from "../../connections";
+import { getTronWeb } from "../../../connections";
 
 
 export async function getTronUSDTBalance(address: string) {

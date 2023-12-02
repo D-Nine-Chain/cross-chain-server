@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ChainEnum, CryptoTransfer, CryptoTransferSchema } from '../schemas';
+import { validateAmount } from '../validations/amountValidation';
 
 export async function startTransfer(req: Request, res: Response): Promise<void> {
    const parseResult: any = CryptoTransferSchema.safeParse(req.body);
@@ -7,12 +8,15 @@ export async function startTransfer(req: Request, res: Response): Promise<void> 
       res.status(400).send(parseResult.error);
    }
    const transfer: CryptoTransfer = parseResult.data;
+   const isValidTransfer = await validateTransfer(transfer);
 
 }
 
-function validateTransfer(transfer: CryptoTransfer) {
-
+async function validateTransfer(transfer: CryptoTransfer) {
+   const isValidAmount = await validateAmount(transfer.fromChain, transfer.fromAddress, transfer.amount);
+   return isValidAmount
 }
 
-function validateBalance() { }
-function validateAllowance() { }
+async function startTransferCommit(transfer: CryptoTransfer) {
+
+}
