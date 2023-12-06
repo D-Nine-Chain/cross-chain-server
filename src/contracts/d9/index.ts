@@ -3,7 +3,7 @@ import { BN, BN_ONE } from "@polkadot/util";
 import { getD9Api } from '../../connections';
 import { ContractCallOutcome } from '@polkadot/api-contract/types';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
-
+import { ISubmittableResult } from '@polkadot/types/types';
 export const MAX_CALL_WEIGHT = new BN(5_000_000_000_000).isub(BN_ONE);
 export const STORAGE_DEPOSIT_LIMIT = null;
 export const PROOFSIZE = new BN(119903836479112);
@@ -50,6 +50,11 @@ interface ContractResponse {
    err?: any; // any errors that the contract emitted
 }
 
-async function submittableHandler(submittable: SubmittableExtrinsic<'promise'>): Promise<ContractCallOutcome> {
-
+async function submittableResponseHandler(submittableResult: ISubmittableResult): Promise<void> {
+   if (submittableResult.isFinalized && !submittableResult.dispatchError) {
+      return Promise.resolve();
+   }
+   else {
+      return Promise.reject(submittableResult.dispatchError);
+   }
 }

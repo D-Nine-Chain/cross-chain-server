@@ -3,7 +3,6 @@ import { getD9Api } from "../../../connections";
 import { crossChainD9Contract } from "./crossChainTransferABI";
 import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, getWriteGasLimit, processContractCallOutcome } from "..";
 import { formatNumber, toUSDTUnits } from "../../../functions/utils";
-import { ContractCallOutcome } from "@polkadot/api-contract/types";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { getNodeD9Address } from "../../../functions/d9Wallet";
 

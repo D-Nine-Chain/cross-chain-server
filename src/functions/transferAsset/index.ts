@@ -1,5 +1,6 @@
 import { assetCommitD9, generateTransactionIdD9 } from "../../contracts/d9/crossChainTransfer.ts";
 import { CryptoTransfer } from "../../types";
+import { getNodeD9KeyPair } from "../d9Wallet/index.js";
 
 export async function generateTransactionID(transfer: CryptoTransfer): Promise<string> {
    const d9Address = transfer.fromChain === 'D9' ? transfer.fromAddress : transfer.toAddress;
@@ -20,7 +21,10 @@ async function assetCommit(transfer: CryptoTransfer) {
    if (transfer.fromChain === 'TRON') {
       // do tron stuff
    } else {
-      await assetCommitD9(transfer.transactionId!, transfer.fromAddress, transfer.toAddress, transfer.amount);
+      const unsignedTx = await assetCommitD9(transfer.transactionId!, transfer.fromAddress, transfer.toAddress, transfer.amount);
+      const keyPair = await getNodeD9KeyPair();
+      const signedTx = await unsignedTx.signAsync(keyPair, { nonce: -1 });
+      await signedTx.send();
    }
 }
 
