@@ -1,6 +1,5 @@
 import { getTronWeb } from "../../../connections";
 
-
 export async function getTronUSDTBalance(address: string) {
    const contract = await getTronUSDT();
    const balance = await contract.balanceOf(address).call();

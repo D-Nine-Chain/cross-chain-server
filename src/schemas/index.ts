@@ -1,6 +1,6 @@
 import { z } from 'zod';
+import { validateAddress } from '../functions/validation';
 export const ChainEnum = z.enum(["TRON", "D9"]);
-export type ChainEnum = z.infer<typeof ChainEnum>;
 
 export const CryptoTransferSchema = z.object({
    fromAddress: z.string().min(1, "From address is required"),
@@ -15,3 +15,6 @@ export const CryptoTransferSchema = z.object({
    path: ["toChain"],
 });
 
+export const D9Address = z.string().refine((data) =>
+   validateAddress("D9", data), { message: "Invalid D9 address" }
+)

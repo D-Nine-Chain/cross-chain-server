@@ -1,5 +1,5 @@
-import { getTronWeb } from "../connections/";
-import { ChainEnum } from "../schemas";
+import { getTronWeb } from "../../connections";
+import { ChainEnum } from "../../types";
 const { decodeAddress, encodeAddress } = require('@polkadot/keyring');
 const { isHex } = require('@polkadot/util');
 

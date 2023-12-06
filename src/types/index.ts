@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { CryptoTransferSchema } from "../schemas";
+import { ChainEnum, CryptoTransferSchema } from "../schemas";
 import type { WeightV2 } from '@polkadot/types/interfaces'
+
+export type ChainEnum = z.infer<typeof ChainEnum>;
 
 export type CryptoTransfer = z.infer<typeof CryptoTransferSchema>;
 
