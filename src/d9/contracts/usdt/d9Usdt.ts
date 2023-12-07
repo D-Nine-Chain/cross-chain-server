@@ -4,7 +4,7 @@ import { ContractPromise } from '@polkadot/api-contract';
 import { usdtContractABI } from "./d9UsdtAbi";
 import { GasLimits } from "../../../types";
 import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, getWriteGasLimit, processContractCallOutcome } from "..";
-import { formatNumber } from "../../../functions/utils";
+import { formatNumber } from "../../../utils";
 
 
 
@@ -16,7 +16,7 @@ export async function getD9USDTBalance(address: string): Promise<number> {
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
    }, address)
       .then((outcome) => {
-         return processContractCallOutcome<number>(outcome, formatNumber)
+         return processContractCallOutcome<number>(outcome, formatNumber, "balanceOf")
       })
 }
 
@@ -28,7 +28,7 @@ export async function getD9USDTAllowance(userAddress: string): Promise<number> {
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
    }, userAddress, process.env.D9_TRANSFER_CONTRACT_ADDRESS!)
       .then((outcome) => {
-         return processContractCallOutcome<number>(outcome, formatNumber)
+         return processContractCallOutcome<number>(outcome, formatNumber, "allowance")
       })
 }
 

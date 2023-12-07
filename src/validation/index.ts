@@ -1,4 +1,4 @@
-import { CryptoTransfer } from "../../types";
+import { CryptoTransfer } from "../types";
 import { validateAddress } from "./addressValidation";
 import { validateAmount } from "./amountValidation";
 export { validateAddress };

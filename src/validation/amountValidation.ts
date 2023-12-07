@@ -1,5 +1,7 @@
-import { getD9USDTAllowance, getD9USDTBalance, getTronUSDTAllowance, getTronUSDTBalance } from "../../contracts";
-import { ChainEnum } from "../../types";
+
+import { getD9USDTAllowance, getD9USDTBalance } from "../d9/contracts/usdt/d9Usdt";
+import { getTronUSDTAllowance, getTronUSDTBalance } from "../tron/contracts/usdt";
+import { ChainEnum } from "../types";
 
 export async function validateAmount(chainEnum: ChainEnum, userAddress: string, amount: number): Promise<[void, void]> {
    const allowanceCheckPromise = validateAllowance(chainEnum, userAddress, amount);

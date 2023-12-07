@@ -2,9 +2,9 @@ import { ContractPromise } from "@polkadot/api-contract";
 import { getD9Api } from "../../../connections";
 import { crossChainD9Contract } from "./crossChainTransferABI";
 import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, getWriteGasLimit, processContractCallOutcome } from "..";
-import { formatNumber, toUSDTUnits } from "../../../functions/utils";
+import { formatNumber, toUSDTUnits } from "../../../utils";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
-import { getNodeD9Address } from "../../../functions/d9Wallet";
+import { getNodeD9Address } from "../../wallet";
 
 /**
  * @description get transaction id
@@ -19,19 +19,20 @@ export async function generateTransactionIdD9(userAddress: string): Promise<stri
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
    }, userAddress)
       .then((outcome) => {
-         return processContractCallOutcome<string>(outcome, (data) => { return data })
+         return processContractCallOutcome<string>(outcome, (data) => { return data }, "generateTxId")
       })
 }
 
-export async function assetCommitD9(transactionId: string, fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+export async function createAssetCommitExtrinsic(fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+   console.log("calling contract for d9 asset commit")
    const contract = await getD9CrossChainTransfer();
    return contract.tx['assetCommit']({
       gasLimit: await getWriteGasLimit(),
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
-   }, transactionId, fromAddress, toAddress, toUSDTUnits(amount))
+   }, fromAddress, toAddress, toUSDTUnits(amount))
 }
 
-export async function assetDispatchD9(transactionId: string, fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+export async function createAssetDispatchExtrinsic(transactionId: string, fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
    const contract = await getD9CrossChainTransfer();
    return contract.tx['assetDispatch']({
       gasLimit: await getWriteGasLimit(),
@@ -47,10 +48,13 @@ export async function getCurrentNonceD9(userAddress: string): Promise<number> {
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
    }, userAddress)
       .then((outcome) => {
-         return processContractCallOutcome<number>(outcome, transactionNonceFormatter)
+         return processContractCallOutcome<number>(outcome, transactionNonceFormatter, "getCurrentNonce")
       })
 }
-
+/**
+ * 
+ * @returns d9 cross chain contract 
+ */
 export async function getD9CrossChainTransfer(): Promise<ContractPromise> {
    const d9 = await getD9Api();
    const contract = new ContractPromise(d9, crossChainD9Contract, process.env.D9_TRANSFER_CONTRACT_ADDRESS!);

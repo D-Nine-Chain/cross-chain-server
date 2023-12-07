@@ -18,9 +18,8 @@ export async function getReadGasLimit() {
    return api.registry.createType('WeightV2', { refTime: MAX_CALL_WEIGHT, proofSize: PROOFSIZE }) as WeightV2
 }
 
-export async function processContractCallOutcome<T>(callOutcome: ContractCallOutcome, dataFormatter: (data: any) => T): Promise<T> {
-   console.log("result", callOutcome.result.toJSON())
-   console.log("output", callOutcome.output?.toJSON())
+export async function processContractCallOutcome<T>(callOutcome: ContractCallOutcome, dataFormatter: (data: any) => T, methodName?: string): Promise<T> {
+   console.log("output for ", methodName, callOutcome.output?.toJSON())
    if (callOutcome.result.isOk) {
       const contractResponse = (callOutcome.output!.toJSON()! as any).ok
       if (contractResponse != null) {// ok is the rust okay, some contracts response with Result others give raw data 
@@ -45,16 +44,17 @@ async function contractResponseHandler<T>(contractResponse: ContractResponse, da
    }
 }
 
-interface ContractResponse {
-   ok?: any; // the result of the contract call
-   err?: any; // any errors that the contract emitted
-}
-
-async function submittableResponseHandler(submittableResult: ISubmittableResult): Promise<void> {
+export function submittableResultHandler(submittableResult: ISubmittableResult): Promise<void> {
+   console.log("submittable result", submittableResult.toHuman())
    if (submittableResult.isFinalized && !submittableResult.dispatchError) {
       return Promise.resolve();
    }
    else {
       return Promise.reject(submittableResult.dispatchError);
    }
+}
+
+interface ContractResponse {
+   ok?: any; // the result of the contract call
+   err?: any; // any errors that the contract emitted
 }

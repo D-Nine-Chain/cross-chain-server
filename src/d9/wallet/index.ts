@@ -8,6 +8,7 @@ export async function signTranaction(tx: SubmittableExtrinsic<"promise">): Promi
 }
 
 export async function getNodeD9Address(): Promise<string> {
+   console.info(`getting node d9 address`)
    const keyPair = await getNodeD9KeyPair();
    return keyPair.address;
 }

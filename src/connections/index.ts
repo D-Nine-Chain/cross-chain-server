@@ -1,5 +1,5 @@
-import { getTronWeb } from "./tronConnection";
-import { getD9Api } from "./d9Connection";
+import { getTronWeb } from "../tron/conn";
+import { getD9Api } from "../d9/conn";
 export { getTronWeb, getD9Api }
 
 export async function initConnections() {

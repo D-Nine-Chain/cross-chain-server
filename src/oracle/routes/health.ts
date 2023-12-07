@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getD9Api, getTronWeb } from '../connections';
+import { getD9Api, getTronWeb } from '../../connections';
 
 export async function health(req: Request, res: Response): Promise<void> {
    const d9Api = await getD9Api();
