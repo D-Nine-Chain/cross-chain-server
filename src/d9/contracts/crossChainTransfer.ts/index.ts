@@ -13,19 +13,39 @@ export async function d9getTransaction(transactionId: string): Promise<any> {
    return getTransaction(transactionId)
 }
 
-export async function executeD9UsdtCommit(commit: D9CommitUSDT) {
-   console.log("assetCommitD9 function call");
-   const unsignedTxPromise = createAssetCommitExtrinsic(commit.transactionId, commit.fromAddress, commit.toAddress, toUSDTUnits(commit.amount));
-   return callContract(unsignedTxPromise)
-      .then((result) => {
-         return result.toHuman();
-      })
-      .catch((e) => {
-         console.log("error in d9 asset commit", e)
-         throw e;
+export async function queryExecuteCommit(commit: D9CommitUSDT) {
+   console.log("commit is ", commit)
+   const contract: ContractPromise = await getD9CrossChainTransfer();
+   const nodeAddress = await getNodeD9Address();
+   return contract.query['assetCommit'](nodeAddress, {
+      gasLimit: await getReadGasLimit(),
+      storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
+   }, commit.transactionId, commit.fromAddress, commit.toAddress, toUSDTUnits(commit.amount))
+      .then((outcome) => {
+         return processContractCallOutcome<string>(outcome, (data) => { return data }, "dry run execute d9 commit")
       })
 }
+
+
+export async function executeD9UsdtCommit(commit: D9CommitUSDT) {
+   return queryExecuteCommit(commit)
+      .then(() => {
+         console.log("assetCommitD9 function call");
+         const unsignedTxPromise = createAssetCommitExtrinsic(commit.transactionId, commit.fromAddress, commit.toAddress, commit.amount);
+         return callContract(unsignedTxPromise)
+            .then((result) => {
+               return result.toHuman();
+            })
+            .catch((e) => {
+               console.log("error in d9 asset commit", e)
+               throw e;
+            })
+      })
+}
+
+
 export async function queryExecuteDispatch(dispatch: D9DispatchUSDT) {
+   console.log("dispatch is ", dispatch)
    const contract: ContractPromise = await getD9CrossChainTransfer();
    const nodeAddress = await getNodeD9Address();
    return contract.query['assetDispatch'](nodeAddress, {
@@ -41,7 +61,7 @@ export async function executeD9UsdtDispatch(dispatch: D9DispatchUSDT) {
    return queryExecuteDispatch(dispatch)
       .then(() => {
          console.log("assetDispatchD9 function call");
-         const unsignedTxPromise = createAssetDispatchExtrinsic(dispatch.fromAddress, dispatch.toAddress, toUSDTUnits(dispatch.amount));
+         const unsignedTxPromise = createAssetDispatchExtrinsic(dispatch.fromAddress, dispatch.toAddress, dispatch.amount);
          return callContract(unsignedTxPromise)
             .then((result) => {
                console.log("result", result.toHuman())
@@ -50,18 +70,6 @@ export async function executeD9UsdtDispatch(dispatch: D9DispatchUSDT) {
       })
 }
 
-export async function dryRunExecuteUsdtDispatch(dispatch: D9DispatchUSDT) {
-   const contract: ContractPromise = await getD9CrossChainTransfer();
-   const nodeAddress = await getNodeD9Address();
-   return contract.query['assetDispatch'](nodeAddress, {
-      gasLimit: await getReadGasLimit(),
-      storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
-   }, dispatch.fromAddress, dispatch.toAddress, toUSDTUnits(dispatch.amount))
-      .then((outcome) => {
-         return processContractCallOutcome<string>(outcome, (data) => { return data }, "dry run execute d9 dispatch")
-      })
-
-}
 
 async function callContract(unsignedTxPromise: Promise<SubmittableExtrinsic<'promise'>>): Promise<ISubmittableResult> {
    const keyPairPromise = getNodeD9KeyPair();
@@ -89,25 +97,7 @@ async function callContract(unsignedTxPromise: Promise<SubmittableExtrinsic<'pro
       })
       .catch((e) => {
          console.log("error in d9 contract call", e)
-         throw new Error("Error at D9 Commit contract call");
+         throw new Error(JSON.stringify(e))
       });
 }
 
-// function decodeEvent(event: any) {
-//    console.log("decoding event")
-//    const abi = new Abi(crossChainD9Contract)
-//    if (event.method == "ContractEmitted") {
-//       console.log("contract emitted event")
-//       const [emittedContractAddress, data] = event.data;
-//       console.log("emitted contract address is ", emittedContractAddress)
-//       const decodedData = abi.decodeEvent(data);
-//       console.log("decoded data to json", decodedData)
-//       const eventArgs = decodedData.args;
-//       eventArgs.forEach((arg: any) => {
-//          console.log("arg is ", arg)
-//          console.log("arg is ", arg.toJSON())
-//       })
-//       console.log("Contract emitted event:", decodedData.event);
-
-//    }
-// }

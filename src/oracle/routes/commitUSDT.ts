@@ -27,7 +27,9 @@ export async function commitUSDTRoute(
             .catch((e) => { throw e })
       })
       .then(commitRequest => {
-         validateCommitRequest(commitRequest);
+         return validateCommitRequest(commitRequest).then(() => commitRequest)
+      })
+      .then(commitRequest => {
          return commitRequest.fromChain === "D9"
             ? createD9Commit(commitRequest)
             : createTronCommit(commitRequest);
@@ -40,7 +42,11 @@ export async function commitUSDTRoute(
       .then(() => res.send({ success: true }))
       .catch(error => {
          console.error("Error in cross-chain transfer route", error);
-         res.status(500).send({ success: false, error });
+         if (error.message) {
+            res.status(500).send({ success: false, error: error.message });
+         } else {
+            res.status(500).send({ success: false, error });
+         }
       });
 }
 

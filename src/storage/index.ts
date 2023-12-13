@@ -10,7 +10,7 @@ export async function markTransactionComplete(transactionId: string) {
    return getDb()
       .then((db) => {
          const docRef = doc(db, COLLECTION, transactionId)
-         return updateDoc(docRef, COLLECTION, transactionId, { status: TransactionStatus.Complete, completionTime: Date.now() })
+         return updateDoc(docRef, { status: TransactionStatus.Complete, completionTime: Date.now() })
       })
 }
 

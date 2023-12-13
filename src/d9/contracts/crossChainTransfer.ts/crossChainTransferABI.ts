@@ -1,6 +1,6 @@
 export const crossChainD9Contract = {
    "source": {
-      "hash": "0x166a29e598da12ac7f721b82d205edb02ecd486a0648597359f53acff7f323bd",
+      "hash": "0x71c5c38a461bba5de941ceba398df1e20d9a43f8201bd829d472b0b95951edf3",
       "language": "ink! 4.3.0",
       "compiler": "rustc 1.72.0",
       "build_info": {
@@ -141,15 +141,6 @@ export const crossChainD9Contract = {
                         "String"
                      ],
                      "type": 4
-                  }
-               },
-               {
-                  "docs": [],
-                  "indexed": true,
-                  "label": "from_address",
-                  "type": {
-                     "displayName": [],
-                     "type": 16
                   }
                },
                {
@@ -556,7 +547,7 @@ export const crossChainD9Contract = {
                                                 },
                                                 "1": {
                                                    "fields": [],
-                                                   "name": "Transfer"
+                                                   "name": "Dispatch"
                                                 }
                                              }
                                           }
@@ -1019,7 +1010,7 @@ export const crossChainD9Contract = {
                      },
                      {
                         "index": 1,
-                        "name": "Transfer"
+                        "name": "Dispatch"
                      }
                   ]
                }

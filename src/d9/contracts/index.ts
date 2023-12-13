@@ -19,6 +19,9 @@ export async function getReadGasLimit() {
 
 export async function processContractCallOutcome<T>(callOutcome: ContractCallOutcome, dataFormatter: (data: any) => T, methodName?: string): Promise<T> {
    console.log("output for ", methodName, callOutcome.output?.toJSON())
+   if (!callOutcome.output) {
+      throw new Error(JSON.stringify(callOutcome.result.toJSON()))
+   }
    if (callOutcome.result.isOk) {
       const contractResponse = (callOutcome.output!.toJSON()! as any).ok
       if (contractResponse != null) {// ok is the rust okay, some contracts response with Result others give raw data 

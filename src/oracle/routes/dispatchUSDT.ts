@@ -19,11 +19,10 @@ export async function dispatchUSDTRoute(req: Request, res: Response): Promise<vo
          return parseResult.data as DispatchRequest;
       })
       .then(dispatchRequest => {
-         validateDispatchRequest(dispatchRequest);
-         transactionId = dispatchRequest.transactionId;
-         return dispatchRequest;
+         return validateDispatchRequest(dispatchRequest).then(() => dispatchRequest)
       })
-      .then(dispatchRequest => {
+      .then((dispatchRequest) => {
+         transactionId = dispatchRequest.transactionId;
          return dispatchRequest.fromChain === "TRON"
             ? createD9Dispatch(dispatchRequest)
             : tronSendUserUSDT(dispatchRequest.toAddress, dispatchRequest.amount);
@@ -39,7 +38,11 @@ export async function dispatchUSDTRoute(req: Request, res: Response): Promise<vo
       .then(() => res.send({ success: true }))
       .catch(error => {
          console.error("Error in cross-chain transfer route", error);
-         res.status(500).send({ success: false, error });
+         if (typeof error === 'string') {
+            res.status(500).send({ success: false, error: JSON.parse(error) });
+         } else {
+            res.status(500).send({ success: false, error });
+         }
       });
 }
 
