@@ -5,6 +5,7 @@ import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, getWriteGasLimit, processContra
 import { formatNumber, toUSDTUnits } from "../../../utils";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { getNodeD9Address } from "../../wallet";
+import { hexToU8a } from "@polkadot/util";
 
 /**
  * @description get transaction id
@@ -23,21 +24,34 @@ export async function generateTransactionIdD9(userAddress: string): Promise<stri
       })
 }
 
-export async function createAssetCommitExtrinsic(fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+export async function getTransaction(transactionId: string): Promise<any> {
+   const contract: ContractPromise = await getD9CrossChainTransfer();
+   const nodeAddress = await getNodeD9Address();
+   return contract.query['getTransaction'](nodeAddress, {
+      gasLimit: await getReadGasLimit(),
+      storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
+   }, transactionId)
+      .then((outcome) => {
+         return processContractCallOutcome<string>(outcome, (data) => { return data }, "generateTxId")
+      })
+}
+
+export async function createAssetCommitExtrinsic(transactionId: string, fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
    console.log("calling contract for d9 asset commit")
    const contract = await getD9CrossChainTransfer();
    return contract.tx['assetCommit']({
       gasLimit: await getWriteGasLimit(),
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
-   }, fromAddress, toAddress, toUSDTUnits(amount))
+   }, transactionId, fromAddress, hexToU8a(toAddress), toUSDTUnits(amount))
 }
 
-export async function createAssetDispatchExtrinsic(transactionId: string, fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+export async function createAssetDispatchExtrinsic(fromAddress: string, toAddress: string, amount: number): Promise<SubmittableExtrinsic<'promise'>> {
+   console.log("from address ", fromAddress)
    const contract = await getD9CrossChainTransfer();
    return contract.tx['assetDispatch']({
       gasLimit: await getWriteGasLimit(),
       storageDepositLimit: STORAGE_DEPOSIT_LIMIT,
-   }, transactionId, fromAddress, toAddress, toUSDTUnits(amount))
+   }, fromAddress, toAddress, toUSDTUnits(amount))
 }
 
 export async function getCurrentNonceD9(userAddress: string): Promise<number> {
@@ -57,6 +71,7 @@ export async function getCurrentNonceD9(userAddress: string): Promise<number> {
  */
 export async function getD9CrossChainTransfer(): Promise<ContractPromise> {
    const d9 = await getD9Api();
+
    const contract = new ContractPromise(d9, crossChainD9Contract, process.env.D9_TRANSFER_CONTRACT_ADDRESS!);
    return contract;
 }

@@ -1,6 +1,6 @@
 export const crossChainD9Contract = {
    "source": {
-      "hash": "0xfb6fd70abbdf5853ca0c576b68e5c2020f90eb5423a4a945075fce1213088127",
+      "hash": "0x166a29e598da12ac7f721b82d205edb02ecd486a0648597359f53acff7f323bd",
       "language": "ink! 4.3.0",
       "compiler": "rustc 1.72.0",
       "build_info": {
@@ -45,7 +45,7 @@ export const crossChainD9Contract = {
                   "ink_primitives",
                   "ConstructorResult"
                ],
-               "type": 5
+               "type": 6
             },
             "selector": "0x9bae9d5e"
          }
@@ -62,7 +62,7 @@ export const crossChainD9Contract = {
             "displayName": [
                "Balance"
             ],
-            "type": 4
+            "type": 5
          },
          "blockNumber": {
             "displayName": [
@@ -96,12 +96,12 @@ export const crossChainD9Contract = {
                {
                   "docs": [],
                   "indexed": true,
-                  "label": "tx_id",
+                  "label": "transaction_id",
                   "type": {
                      "displayName": [
                         "String"
                      ],
-                     "type": 9
+                     "type": 4
                   }
                },
                {
@@ -109,17 +109,10 @@ export const crossChainD9Contract = {
                   "indexed": true,
                   "label": "from_address",
                   "type": {
-                     "displayName": [],
-                     "type": 2
-                  }
-               },
-               {
-                  "docs": [],
-                  "indexed": true,
-                  "label": "to_address",
-                  "type": {
-                     "displayName": [],
-                     "type": 16
+                     "displayName": [
+                        "AccountId"
+                     ],
+                     "type": 1
                   }
                },
                {
@@ -130,7 +123,7 @@ export const crossChainD9Contract = {
                      "displayName": [
                         "u128"
                      ],
-                     "type": 4
+                     "type": 5
                   }
                }
             ],
@@ -147,7 +140,7 @@ export const crossChainD9Contract = {
                      "displayName": [
                         "String"
                      ],
-                     "type": 9
+                     "type": 4
                   }
                },
                {
@@ -164,8 +157,10 @@ export const crossChainD9Contract = {
                   "indexed": true,
                   "label": "to_address",
                   "type": {
-                     "displayName": [],
-                     "type": 2
+                     "displayName": [
+                        "AccountId"
+                     ],
+                     "type": 1
                   }
                },
                {
@@ -176,12 +171,12 @@ export const crossChainD9Contract = {
                      "displayName": [
                         "u128"
                      ],
-                     "type": 4
+                     "type": 5
                   }
                }
             ],
             "docs": [],
-            "label": "TransferCompleted"
+            "label": "DispatchCompleted"
          }
       ],
       "lang_error": {
@@ -189,7 +184,7 @@ export const crossChainD9Contract = {
             "ink",
             "LangError"
          ],
-         "type": 7
+         "type": 8
       },
       "messages": [
          {
@@ -214,7 +209,7 @@ export const crossChainD9Contract = {
                   "ink",
                   "MessageResult"
                ],
-               "type": 8
+               "type": 9
             },
             "selector": "0xfc9bd990"
          },
@@ -277,10 +272,47 @@ export const crossChainD9Contract = {
          {
             "args": [
                {
+                  "label": "tx_id",
+                  "type": {
+                     "displayName": [
+                        "String"
+                     ],
+                     "type": 4
+                  }
+               }
+            ],
+            "default": false,
+            "docs": [],
+            "label": "get_transaction",
+            "mutates": false,
+            "payable": false,
+            "returnType": {
+               "displayName": [
+                  "ink",
+                  "MessageResult"
+               ],
+               "type": 10
+            },
+            "selector": "0xfeeb858e"
+         },
+         {
+            "args": [
+               {
+                  "label": "transaction_id",
+                  "type": {
+                     "displayName": [
+                        "String"
+                     ],
+                     "type": 4
+                  }
+               },
+               {
                   "label": "from_address",
                   "type": {
-                     "displayName": [],
-                     "type": 2
+                     "displayName": [
+                        "AccountId"
+                     ],
+                     "type": 1
                   }
                },
                {
@@ -294,9 +326,9 @@ export const crossChainD9Contract = {
                   "label": "amount",
                   "type": {
                      "displayName": [
-                        "u128"
+                        "Balance"
                      ],
-                     "type": 4
+                     "type": 5
                   }
                }
             ],
@@ -326,17 +358,19 @@ export const crossChainD9Contract = {
                {
                   "label": "to_address",
                   "type": {
-                     "displayName": [],
-                     "type": 2
+                     "displayName": [
+                        "AccountId"
+                     ],
+                     "type": 1
                   }
                },
                {
                   "label": "amount",
                   "type": {
                      "displayName": [
-                        "u128"
+                        "Balance"
                      ],
-                     "type": 4
+                     "type": 5
                   }
                }
             ],
@@ -376,7 +410,7 @@ export const crossChainD9Contract = {
                   "ink",
                   "MessageResult"
                ],
-               "type": 5
+               "type": 6
             },
             "selector": "0xc92e346d"
          },
@@ -402,7 +436,7 @@ export const crossChainD9Contract = {
                   "ink",
                   "MessageResult"
                ],
-               "type": 5
+               "type": 6
             },
             "selector": "0xda7dbaee"
          },
@@ -418,7 +452,7 @@ export const crossChainD9Contract = {
                   "ink",
                   "MessageResult"
                ],
-               "type": 5
+               "type": 6
             },
             "selector": "0xa8656c6c"
          },
@@ -434,7 +468,7 @@ export const crossChainD9Contract = {
                   "ink",
                   "MessageResult"
                ],
-               "type": 5
+               "type": 6
             },
             "selector": "0xd45e3d78"
          }
@@ -503,6 +537,15 @@ export const crossChainD9Contract = {
                                  "fields": [
                                     {
                                        "layout": {
+                                          "leaf": {
+                                             "key": "0x82645412",
+                                             "ty": 4
+                                          }
+                                       },
+                                       "name": "transaction_id"
+                                    },
+                                    {
+                                       "layout": {
                                           "enum": {
                                              "dispatchKey": "0x82645412",
                                              "name": "TransactionType",
@@ -569,15 +612,9 @@ export const crossChainD9Contract = {
                                                    "fields": [
                                                       {
                                                          "layout": {
-                                                            "array": {
-                                                               "layout": {
-                                                                  "leaf": {
-                                                                     "key": "0x82645412",
-                                                                     "ty": 3
-                                                                  }
-                                                               },
-                                                               "len": 32,
-                                                               "offset": "0x82645412"
+                                                            "leaf": {
+                                                               "key": "0x82645412",
+                                                               "ty": 1
                                                             }
                                                          },
                                                          "name": "0"
@@ -620,15 +657,9 @@ export const crossChainD9Contract = {
                                                    "fields": [
                                                       {
                                                          "layout": {
-                                                            "array": {
-                                                               "layout": {
-                                                                  "leaf": {
-                                                                     "key": "0x82645412",
-                                                                     "ty": 3
-                                                                  }
-                                                               },
-                                                               "len": 32,
-                                                               "offset": "0x82645412"
+                                                            "leaf": {
+                                                               "key": "0x82645412",
+                                                               "ty": 1
                                                             }
                                                          },
                                                          "name": "0"
@@ -645,7 +676,7 @@ export const crossChainD9Contract = {
                                        "layout": {
                                           "leaf": {
                                              "key": "0x82645412",
-                                             "ty": 4
+                                             "ty": 5
                                           }
                                        },
                                        "name": "amount"
@@ -727,7 +758,7 @@ export const crossChainD9Contract = {
          "id": 4,
          "type": {
             "def": {
-               "primitive": "u128"
+               "primitive": "str"
             }
          }
       },
@@ -735,12 +766,20 @@ export const crossChainD9Contract = {
          "id": 5,
          "type": {
             "def": {
+               "primitive": "u128"
+            }
+         }
+      },
+      {
+         "id": 6,
+         "type": {
+            "def": {
                "variant": {
                   "variants": [
                      {
                         "fields": [
                            {
-                              "type": 6
+                              "type": 7
                            }
                         ],
                         "index": 0,
@@ -749,7 +788,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 7
+                              "type": 8
                            }
                         ],
                         "index": 1,
@@ -761,11 +800,11 @@ export const crossChainD9Contract = {
             "params": [
                {
                   "name": "T",
-                  "type": 6
+                  "type": 7
                },
                {
                   "name": "E",
-                  "type": 7
+                  "type": 8
                }
             ],
             "path": [
@@ -774,7 +813,7 @@ export const crossChainD9Contract = {
          }
       },
       {
-         "id": 6,
+         "id": 7,
          "type": {
             "def": {
                "tuple": []
@@ -782,7 +821,7 @@ export const crossChainD9Contract = {
          }
       },
       {
-         "id": 7,
+         "id": 8,
          "type": {
             "def": {
                "variant": {
@@ -801,7 +840,7 @@ export const crossChainD9Contract = {
          }
       },
       {
-         "id": 8,
+         "id": 9,
          "type": {
             "def": {
                "variant": {
@@ -809,7 +848,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 9
+                              "type": 4
                            }
                         ],
                         "index": 0,
@@ -818,7 +857,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 7
+                              "type": 8
                            }
                         ],
                         "index": 1,
@@ -830,24 +869,16 @@ export const crossChainD9Contract = {
             "params": [
                {
                   "name": "T",
-                  "type": 9
+                  "type": 4
                },
                {
                   "name": "E",
-                  "type": 7
+                  "type": 8
                }
             ],
             "path": [
                "Result"
             ]
-         }
-      },
-      {
-         "id": 9,
-         "type": {
-            "def": {
-               "primitive": "str"
-            }
          }
       },
       {
@@ -868,7 +899,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 7
+                              "type": 8
                            }
                         ],
                         "index": 1,
@@ -884,7 +915,7 @@ export const crossChainD9Contract = {
                },
                {
                   "name": "E",
-                  "type": 7
+                  "type": 8
                }
             ],
             "path": [
@@ -932,6 +963,11 @@ export const crossChainD9Contract = {
                "composite": {
                   "fields": [
                      {
+                        "name": "transaction_id",
+                        "type": 4,
+                        "typeName": "String"
+                     },
+                     {
                         "name": "transaction_type",
                         "type": 13,
                         "typeName": "TransactionType"
@@ -953,7 +989,7 @@ export const crossChainD9Contract = {
                      },
                      {
                         "name": "amount",
-                        "type": 4,
+                        "type": 5,
                         "typeName": "u128"
                      },
                      {
@@ -1038,8 +1074,8 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 2,
-                              "typeName": "[u8; 32]"
+                              "type": 1,
+                              "typeName": "AccountId"
                            }
                         ],
                         "index": 1,
@@ -1084,7 +1120,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 7
+                              "type": 8
                            }
                         ],
                         "index": 1,
@@ -1100,7 +1136,7 @@ export const crossChainD9Contract = {
                },
                {
                   "name": "E",
-                  "type": 7
+                  "type": 8
                }
             ],
             "path": [
@@ -1126,7 +1162,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 7
+                              "type": 8
                            }
                         ],
                         "index": 1,
@@ -1142,7 +1178,7 @@ export const crossChainD9Contract = {
                },
                {
                   "name": "E",
-                  "type": 7
+                  "type": 8
                }
             ],
             "path": [
@@ -1159,7 +1195,7 @@ export const crossChainD9Contract = {
                      {
                         "fields": [
                            {
-                              "type": 9
+                              "type": 4
                            }
                         ],
                         "index": 0,
@@ -1180,7 +1216,7 @@ export const crossChainD9Contract = {
             "params": [
                {
                   "name": "T",
-                  "type": 9
+                  "type": 4
                },
                {
                   "name": "E",
@@ -1232,26 +1268,30 @@ export const crossChainD9Contract = {
                      },
                      {
                         "index": 5,
-                        "name": "TronAddressInvalidByteLength"
+                        "name": "DecodedHexLengthInvalid"
                      },
                      {
                         "index": 6,
-                        "name": "InvalidTronAddress"
+                        "name": "TronAddressInvalidByteLength"
                      },
                      {
                         "index": 7,
-                        "name": "TronDecodeError"
+                        "name": "InvalidTronAddress"
                      },
                      {
                         "index": 8,
-                        "name": "UnableToSendUSDT"
+                        "name": "TronDecodeError"
                      },
                      {
                         "index": 9,
-                        "name": "InsufficientAllowance"
+                        "name": "UnableToSendUSDT"
                      },
                      {
                         "index": 10,
+                        "name": "InsufficientAllowance"
+                     },
+                     {
+                        "index": 11,
                         "name": "UserUSDTBalanceInsufficient"
                      }
                   ]
@@ -1306,4 +1346,4 @@ export const crossChainD9Contract = {
       }
    ],
    "version": "4"
-}
+} 

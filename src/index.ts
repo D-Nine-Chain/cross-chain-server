@@ -6,11 +6,13 @@ import { defineRoutes } from "./oracle/routes";
 
 import express from 'express';
 import { getNodeD9Address } from "./d9/wallet";
+import { setupDb } from "./storage/firestoreSetup";
 export const app = express();
 export const d9Keyring = new Keyring({ type: 'sr25519' });
 
 app.use(express.json());
 defineRoutes(app);
+setupDb().catch(console.error);
 initConnections().then(() => {
    app.listen(process.env.PORT, () => {
 
@@ -19,4 +21,3 @@ initConnections().then(() => {
    })
 })
    .catch(console.error)
-

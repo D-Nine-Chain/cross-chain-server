@@ -1,11 +1,11 @@
 
-import {
-   mnemonicGenerate,
-   mnemonicToMiniSecret,
-   mnemonicValidate,
-} from '@polkadot/util-crypto';
-import { u8aToHex } from "@polkadot/util";
-const TronWeb = require('tronweb')
+// import {
+//    mnemonicGenerate,
+//    mnemonicToMiniSecret,
+//    mnemonicValidate,
+// } from '@polkadot/util-crypto';
+// import { u8aToHex } from "@polkadot/util";
+// const TronWeb = require('tronweb')
 
 let secretRecord: Record<string, string> | null = null;
 export async function getSecret(string: string) {
@@ -37,17 +37,7 @@ function makeSecretsRecord(secrets: any[]) {
    })
    let secretsRecord: Record<string, string> = {}
    secretsFormatted.forEach((secret: any) => {
-
-      if (secret.name == 'd9_testnet_cross_transfer_node_key') {
-         secretsRecord['D9_NODE_KEY'] = secret.value;
-      }
-      else if (secret.name == 'tron_testnet_cross_transfer_node_key') {
-         secretsRecord['TRON_NODE_KEY'] = secret.value;
-      }
-      else if (secret.name == 'TRON_API_KEY') {
-         secretsRecord['TRON_API_KEY'] = secret.value;
-      }
-
+      secretsRecord[secret.name] = secret.value;
    })
    return secretsRecord
 }
@@ -73,19 +63,19 @@ export async function setHCPAToken() {
    process.env.VAULT_TOKEN = data.access_token;
 }
 
-async function generateTronAccount() {
-   const account = TronWeb.utils.accounts.generateAccount();
-   console.log('Account Details:', account);
-}
+// async function generateTronAccount() {
+//    const account = TronWeb.utils.accounts.generateAccount();
+//    console.log('Account Details:', account);
+// }
 
-function generateD9Account() {
-   let validMnemonic = false;
-   let mnemonic = "";
-   while (validMnemonic === false) {
-      mnemonic = mnemonicGenerate();
-      console.log(`trying mnemonic: ${mnemonic}`)
-      validMnemonic = mnemonicValidate(mnemonic);
-   }
-   return u8aToHex(mnemonicToMiniSecret(mnemonic));
-}
+// function generateD9Account() {
+//    let validMnemonic = false;
+//    let mnemonic = "";
+//    while (validMnemonic === false) {
+//       mnemonic = mnemonicGenerate();
+//       console.log(`trying mnemonic: ${mnemonic}`)
+//       validMnemonic = mnemonicValidate(mnemonic);
+//    }
+//    return u8aToHex(mnemonicToMiniSecret(mnemonic));
+// }
 

@@ -1,6 +1,6 @@
 import { Keyring } from '@polkadot/api';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
-import { KeyringPair, KeyringPair$Json, KeyringPair$Meta } from '@polkadot/keyring/types';
+import { KeyringPair } from '@polkadot/keyring/types';
 import { getSecret } from '../../secrets';
 export async function signTranaction(tx: SubmittableExtrinsic<"promise">): Promise<SubmittableExtrinsic<"promise">> {
    const keyPair = await getNodeD9KeyPair();

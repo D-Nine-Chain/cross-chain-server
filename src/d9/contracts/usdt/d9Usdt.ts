@@ -2,8 +2,7 @@ import { getD9Api } from "../../../connections";
 
 import { ContractPromise } from '@polkadot/api-contract';
 import { usdtContractABI } from "./d9UsdtAbi";
-import { GasLimits } from "../../../types";
-import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, getWriteGasLimit, processContractCallOutcome } from "..";
+import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, processContractCallOutcome } from "..";
 import { formatNumber } from "../../../utils";
 
 

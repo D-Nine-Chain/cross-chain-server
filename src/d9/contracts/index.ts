@@ -2,7 +2,6 @@ import type { WeightV2 } from '@polkadot/types/interfaces'
 import { BN, BN_ONE } from "@polkadot/util";
 import { getD9Api } from '../../connections';
 import { ContractCallOutcome } from '@polkadot/api-contract/types';
-import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 export const MAX_CALL_WEIGHT = new BN(5_000_000_000_000).isub(BN_ONE);
 export const STORAGE_DEPOSIT_LIMIT = null;
@@ -44,13 +43,15 @@ async function contractResponseHandler<T>(contractResponse: ContractResponse, da
    }
 }
 
-export function submittableResultHandler(submittableResult: ISubmittableResult): Promise<void> {
+export function submittableResultHandler(submittableResult: ISubmittableResult) {
    console.log("submittable result", submittableResult.toHuman())
-   if (submittableResult.isFinalized && !submittableResult.dispatchError) {
-      return Promise.resolve();
+   if (submittableResult.status.isFinalized && !submittableResult.dispatchError) {
+      console.log("submittable finalied no dispatch error", submittableResult.toHuman())
+      submittableResult.toHuman();
    }
-   else {
-      return Promise.reject(submittableResult.dispatchError);
+   else if (submittableResult.status.isFinalized && submittableResult.dispatchError) {
+      console.log("submittable result error", submittableResult.toHuman())
+      submittableResult.dispatchError;
    }
 }
 

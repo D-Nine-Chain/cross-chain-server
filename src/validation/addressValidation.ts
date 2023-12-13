@@ -14,8 +14,13 @@ export async function validateAddress(chain: ChainEnum, address: string) {
 
 async function validateTronAddress(address: string) {
    const tronWeb = await getTronWeb();
-   return tronWeb.isAddress(address);
-
+   const isAddress = tronWeb.isAddress(address);
+   if (isAddress) {
+      return Promise.resolve();
+   }
+   else {
+      return Promise.reject("Invalid TRON address");
+   }
 }
 
 function validateD9Address(address: string): boolean {
