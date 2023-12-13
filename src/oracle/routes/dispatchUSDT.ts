@@ -20,6 +20,7 @@ export async function dispatchUSDTRoute(req: Request, res: Response): Promise<vo
       })
       .then(dispatchRequest => {
          return validateDispatchRequest(dispatchRequest).then(() => dispatchRequest)
+            .catch((e) => { throw e })
       })
       .then((dispatchRequest) => {
          transactionId = dispatchRequest.transactionId;
@@ -38,10 +39,10 @@ export async function dispatchUSDTRoute(req: Request, res: Response): Promise<vo
       .then(() => res.send({ success: true }))
       .catch(error => {
          console.error("Error in cross-chain transfer route", error);
-         if (typeof error === 'string') {
-            res.status(500).send({ success: false, error: JSON.parse(error) });
+         if (error.message) {
+            res.status(500).send({ success: false, error: error.message });
          } else {
-            res.status(500).send({ success: false, error });
+            res.status(500).send({ success: false, error: error });
          }
       });
 }

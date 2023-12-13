@@ -1,7 +1,7 @@
 import { CommitRequest, DispatchRequest } from "../types";
 import { validateAddress } from "./addressValidation";
 import { validateAmount } from "./amountValidation";
-import { validateNotDispatchedAlready } from "../storage";
+import { validateCommitExists, validateNotDispatchedAlready } from "../storage";
 export { validateAddress };
 
 /**
@@ -25,7 +25,7 @@ export async function validateDispatchRequest(usdtDispatchRequest: DispatchReque
       await validateAddress(usdtDispatchRequest.toChain, usdtDispatchRequest.toAddress);
       await validateAddress(usdtDispatchRequest.fromChain, usdtDispatchRequest.fromAddress);
       await validateNotDispatchedAlready(usdtDispatchRequest.transactionId);
-      // await validateCommitExists(usdtDispatchRequest.transactionId);
+      await validateCommitExists(usdtDispatchRequest.transactionId);
    }
    catch (e) {
       throw e;
