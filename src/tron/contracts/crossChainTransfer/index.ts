@@ -1,24 +1,24 @@
 import { getTronWeb } from "../../../connections";
-import { TronCommitUSDT, TronDispatchUSDT } from "../../../types";
+import { TronDispatchUSDT } from "../../../types";
 import { crossChainTronContract } from "./crossChainTronAbi";
 
 
-export async function executeTronUsdtCommit(commit: TronCommitUSDT): Promise<any> {
-   getTronTransferContract()
-      .then((contract) => {
-         return contract.assetCommit(
-            commit.transactionId,
-            commit.fromAddress,
-            commit.fromAddressBytes,
-            commit.toAddressBytes,
-            commit.amount
-         ).send();
-      })
-      .catch((e) => {
-         console.log("error in tron asset commit", e)
-         throw e;
-      })
-}
+// export async function executeTronUsdtCommit(commit: TronCommitUSDT): Promise<any> {
+//    getTronTransferContract()
+//       .then((contract) => {
+//          return contract.assetCommit(
+//             commit.transactionId,
+//             commit.fromAddress,
+//             commit.fromAddressBytes,
+//             commit.toAddressBytes,
+//             commit.amount
+//          ).send();
+//       })
+//       .catch((e) => {
+//          console.log("error in tron asset commit", e)
+//          throw e;
+//       })
+// }
 
 export async function tronGetTransaction(transactionId: string): Promise<any> {
    const contract = await getTronTransferContract();

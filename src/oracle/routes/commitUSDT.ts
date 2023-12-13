@@ -14,7 +14,6 @@ export async function commitUSDTRoute(
 ): Promise<void> {
    CommitSchema.safeParseAsync(req.body)
       .then(parseResult => {
-         console.log("parse   result ", parseResult)
          if (!parseResult.success) {
             res.status(400);
             throw parseResult.error;
@@ -28,6 +27,7 @@ export async function commitUSDTRoute(
       })
       .then(commitRequest => {
          return validateCommitRequest(commitRequest).then(() => commitRequest)
+            .catch((e) => { throw e })
       })
       .then(commitRequest => {
          return commitRequest.fromChain === "D9"
@@ -77,7 +77,7 @@ async function createTronCommit(commitRequest: CommitRequest): Promise<TronCommi
    try {
       const addressBytes: AddressBytesForTron = {
          toAddressBytes: convertD9AdressToHex(commitRequest.toAddress),
-         fromAddressBytes: '0x' + (await convertTronAddressToHex(commitRequest.toAddress)),
+         fromAddressBytes: await convertTronAddressToHex(commitRequest.fromAddress),
       }
       newCommit = {
          ...commitRequest,

@@ -1,7 +1,7 @@
 import { getD9Api } from "../../../connections";
 
 import { ContractPromise } from '@polkadot/api-contract';
-import { usdtContractABI } from "./d9UsdtAbi";
+import { usdtContractMetadata } from "./d9UsdtAbi";
 import { STORAGE_DEPOSIT_LIMIT, getReadGasLimit, processContractCallOutcome } from "..";
 import { formatNumber } from "../../../utils";
 
@@ -33,7 +33,7 @@ export async function getD9USDTAllowance(userAddress: string): Promise<number> {
 
 export async function getD9USDT(): Promise<ContractPromise> {
    const d9 = await getD9Api();
-   const contract = new ContractPromise(d9, usdtContractABI, process.env.D9_USDT_CONTRACT_ADDRESS!);
+   const contract = new ContractPromise(d9, usdtContractMetadata, process.env.D9_USDT_CONTRACT_ADDRESS!);
    return contract;
 }
 

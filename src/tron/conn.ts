@@ -6,12 +6,14 @@ export async function getTronWeb() {
    if (tronWeb) {
       return tronWeb;
    } else {
-      const privateKey = await getSecret('TRON_NODE_KEY');
-      tronWeb = new TronWeb({
-         fullHost: process.env.TRON_ENDPOINT,
-         headers: { "TRON-PRO-API-KEY": process.env.TRON_API_KEY },
-         privateKey: privateKey
-      })
-      return tronWeb;
+      return getSecret('TRON_NODE_KEY')
+         .then((privateKey) => {
+            tronWeb = new TronWeb({
+               fullHost: process.env.TRON_ENDPOINT,
+               headers: { "TRON-PRO-API-KEY": process.env.TRON_API_KEY },
+               privateKey: privateKey
+            })
+            return tronWeb;
+         })
    }
 }

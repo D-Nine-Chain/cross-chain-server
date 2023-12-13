@@ -15,6 +15,7 @@ export function convertD9AdressToHex(address: string) {
 
 export async function convertTronAddressToHex(address: string) {
    try {
+      console.log("provided caddress", address)
       const tronWeb = await getTronWeb();
       const hex = '0x' + tronWeb.address.toHex(address);
       return hex;

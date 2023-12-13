@@ -25,7 +25,7 @@ export async function dispatchUSDTRoute(req: Request, res: Response): Promise<vo
          transactionId = dispatchRequest.transactionId;
          return dispatchRequest.fromChain === "TRON"
             ? createD9Dispatch(dispatchRequest)
-            : tronSendUserUSDT(dispatchRequest.toAddress, dispatchRequest.amount);
+            : createTronDispatch(dispatchRequest);
       })
       .then((dispatch: D9DispatchUSDT | TronDispatchUSDT) => {
          return dispatch.fromChain === "TRON"
@@ -64,26 +64,26 @@ async function createD9Dispatch(dispatchRequest: DispatchRequest): Promise<D9Dis
    return dispatch;
 }
 
-// async function createTronDispatch(dispatchRequest: DispatchRequest): Promise<TronDispatchUSDT> {
-//    let dispatch: TronDispatchUSDT;
-//    if (dispatchRequest.fromChain !== "D9") {
-//       throw new Error("Attempting to create Tron dispatch from D9 dispatch request")
-//    }
-//    try {
-//       const addressBytes: AddressBytesForTron = {
-//          fromAddressBytes: convertD9AdressToHex(dispatchRequest.fromAddress),
-//          toAddressBytes: '0x' + (await convertTronAddressToHex(dispatchRequest.toAddress)),
-//       }
-//       dispatch = {
-//          ...dispatchRequest,
-//          transactionId: '0x' + dispatchRequest.transactionId,
-//          ...addressBytes
-//       };
-//    }
-//    catch (err) {
-//       console.error("Error in address conversion:", err);
-//       throw err; // Re-throw the error for the caller to handle
-//    }
+async function createTronDispatch(dispatchRequest: DispatchRequest): Promise<DispatchRequest> {
+   let dispatch: DispatchRequest;
+   if (dispatchRequest.fromChain !== "D9") {
+      throw new Error("Attempting to create Tron dispatch from D9 dispatch request")
+   }
+   try {
+      // const addressBytes: AddressBytesForTron = {
+      //    fromAddressBytes: convertD9AdressToHex(dispatchRequest.fromAddress),
+      //    toAddressBytes: '0x' + (await convertTronAddressToHex(dispatchRequest.toAddress)),
+      // }
+      dispatch = {
+         ...dispatchRequest,
+         transactionId: '0x' + dispatchRequest.transactionId,
+         // ...addressBytes
+      };
+   }
+   catch (err) {
+      console.error("Error in address conversion:", err);
+      throw err; // Re-throw the error for the caller to handle
+   }
 
-//    return dispatch;
-// }
+   return dispatch;
+}

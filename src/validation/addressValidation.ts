@@ -6,21 +6,23 @@ const { isHex } = require('@polkadot/util');
 
 export async function validateAddress(chain: ChainEnum, address: string) {
    if (chain === "TRON") {
-      return await validateTronAddress(address);
+      return validateTronAddress(address);
    } else {
       return validateD9Address(address);
    }
 }
 
 async function validateTronAddress(address: string) {
-   const tronWeb = await getTronWeb();
-   const isAddress = tronWeb.isAddress(address);
-   if (isAddress) {
-      return Promise.resolve();
-   }
-   else {
-      return Promise.reject("Invalid TRON address");
-   }
+   return getTronWeb()
+      .then((tronWeb) => {
+         const isAddress = tronWeb.isAddress(address);
+         if (isAddress) {
+            return Promise.resolve();
+         }
+         else {
+            throw new Error("Invalid Tron Address")
+         }
+      })
 }
 
 function validateD9Address(address: string): boolean {

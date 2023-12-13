@@ -6,17 +6,17 @@ export { validateAddress };
 
 /**
  * this function basically converts whatever is done to validatethe transfer into a single Promise
- * @param usdtCommit 
+ * @param commit 
  * @returns 
  */
-export async function validateCommitRequest(usdtCommit: CommitRequest): Promise<void> {
+export async function validateCommitRequest(commit: CommitRequest): Promise<void> {
    try {
-      await validateAmount(usdtCommit.fromChain, usdtCommit.fromAddress, usdtCommit.amount);
-      await validateAddress(usdtCommit.toChain, usdtCommit.toAddress);
-      await validateAddress(usdtCommit.fromChain, usdtCommit.fromAddress);
+      await validateAmount(commit.fromChain, commit.fromAddress, commit.amount);
+      await validateAddress(commit.toChain, commit.toAddress);
+      await validateAddress(commit.fromChain, commit.fromAddress);
    }
    catch (e) {
-      return Promise.reject(e);
+      throw e;
    }
 }
 
@@ -28,6 +28,6 @@ export async function validateDispatchRequest(usdtDispatchRequest: DispatchReque
       // await validateCommitExists(usdtDispatchRequest.transactionId);
    }
    catch (e) {
-      return Promise.reject(e);
+      throw e;
    }
 }

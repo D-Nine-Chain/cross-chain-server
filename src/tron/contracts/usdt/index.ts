@@ -1,18 +1,35 @@
 import { getTronWeb } from "../../../connections";
 
+
 export async function getTronUSDTBalance(address: string) {
-   const contract = await getTronUSDT();
-   const balance = await contract.balanceOf(address).call();
-   return balance;
+   console.log("getting balance")
+   return getTronUSDT()
+      .then((contract) => {
+         return contract.balanceOf(address).call()
+            .then((balance: any) => {
+               console.log("balance", balance)
+               return balance;
+            })
+      })
+      .catch((e) => {
+         console.log("error getting tron usdt ", e)
+         throw e;
+      })
 }
 
 export async function getTronUSDTAllowance(ownerAddress: string) {
-   const contract = await getTronUSDT();
-   const allowance = await contract.allowance(ownerAddress, process.env.TRON_TRANSFER_CONTRACT_ADDRESS!).call();
-   return allowance;
+   console.log("validating tron allowance")
+   return getTronUSDT()
+      .then((contract) => {
+
+         return contract.allowance(ownerAddress, process.env.TRON_SIMPLE_TRANSFER_CONTRACT_ADDRESS!).call();
+      })
+
 }
 
 export async function getTronUSDT(): Promise<any> {
-   const tronWeb = await getTronWeb();
-   return await tronWeb.contract().at(process.env.TRON_USDT_CONTRACT_ADDRESS!);
+   return getTronWeb()
+      .then((tronWeb) => {
+         return tronWeb.contract().at(process.env.TRON_USDT_CONTRACT_ADDRESS!)
+      })
 }

@@ -14,11 +14,16 @@ export async function validateAmount(chainEnum: ChainEnum, userAddress: string, 
 
 
 async function validateAllowance(chainEnum: ChainEnum, userAddress: string, amount: number): Promise<void> {
-   if (chainEnum === "TRON") {
-      return validateTronAllowance(userAddress, amount);
-   }
-   else {
-      return validateD9Allowance(userAddress, amount);
+   try {
+      if (chainEnum === "TRON") {
+         return validateTronAllowance(userAddress, amount);
+      }
+      else {
+         return validateD9Allowance(userAddress, amount);
+      }
+   } catch (e) {
+      console.log("error in validate allowance", e)
+      throw e;
    }
 }
 
@@ -26,8 +31,12 @@ async function validateTronAllowance(userAddress: string, amount: number): Promi
    return getTronUSDTAllowance(userAddress)
       .then((allowance) => {
          if (allowance < amount) {
-            Promise.reject("Tron USDT has insufficient allowance")
+            throw new Error("Tron USDT has insufficient allowance");
          }
+      })
+      .catch((e) => {
+         console.log("error in tron allowance", e)
+         throw e;
       })
 }
 
@@ -35,7 +44,7 @@ async function validateD9Allowance(userAddress: string, amount: number): Promise
    return getD9USDTAllowance(userAddress)
       .then((allowance) => {
          if (allowance < amount) {
-            return Promise.reject("D9 USDT has insufficient allowance");
+            throw new Error("D9 USDT has insufficient allowance");
          }
          else {
             return Promise.resolve();
@@ -46,7 +55,7 @@ async function validateD9Allowance(userAddress: string, amount: number): Promise
 
 async function validateBalance(chainEnum: ChainEnum, userAddress: string, amount: number): Promise<void> {
    if (chainEnum === "TRON") {
-      return validateTronBalance(userAddress, amount);
+      return validateTronBalance(userAddress, amount)
    }
    else {
       return validateD9Balance(userAddress, amount);
@@ -58,7 +67,7 @@ async function validateD9Balance(userAddress: string, amount: number): Promise<v
    return getD9USDTBalance(userAddress)
       .then((balance) => {
          if (balance <= amount) {
-            return Promise.reject("D9 USDT has insufficient balance");
+            throw new Error("D9 USDT has insufficient balance")
          } else {
             return Promise.resolve();
          }
@@ -68,8 +77,9 @@ async function validateD9Balance(userAddress: string, amount: number): Promise<v
 async function validateTronBalance(userAddress: string, amount: number): Promise<void> {
    return getTronUSDTBalance(userAddress)
       .then((balance) => {
+         console.log("balanace is ", balance)
          if (balance <= amount) {
-            return Promise.reject("Tron USDT has insufficient balance");
+            throw new Error("Tron USDT has insufficient balance")
          } else {
             return Promise.resolve();
          }
