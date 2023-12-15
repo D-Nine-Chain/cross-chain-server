@@ -10,13 +10,8 @@ import { setupDb } from "./storage/firestoreSetup";
 export const app = express();
 export const d9Keyring = new Keyring({ type: 'sr25519' });
 const cors = require('cors');
-const corsOptions = {
-   "origin": "*",
-   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-   "preflightContinue": false,
-   "optionsSuccessStatus": 204
-}
-app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(express.json());
 defineRoutes(app);
 setupDb().catch(console.error);
