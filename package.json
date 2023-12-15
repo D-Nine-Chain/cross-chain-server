@@ -25,6 +25,6 @@
    "scripts": {
       "dev": "NODE_ENV=development ts-node src/index.ts",
       "build": "tsc",
-      "start": "node NODE_ENV=development build/index.js"
+      "start": "NODE_ENV=development node build/index.js"
    }
 }

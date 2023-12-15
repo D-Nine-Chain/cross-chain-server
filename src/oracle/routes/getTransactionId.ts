@@ -11,6 +11,7 @@ export async function getTransactionIdRoute(req: Request, res: Response): Promis
    const userAddress = parseResult.data;
    try {
       const transactionId = await generateTransactionIdD9(userAddress);
+
       res.send(transactionId);
    } catch (e) {
       res.status(500).send({ success: false, error: e });
