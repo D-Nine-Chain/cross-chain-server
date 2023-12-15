@@ -10,13 +10,18 @@ import { setupDb } from "./storage/firestoreSetup";
 export const app = express();
 export const d9Keyring = new Keyring({ type: 'sr25519' });
 const cors = require('cors');
-
-app.use(cors());
+const corsOptions = {
+   "origin": "*",
+   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+   "preflightContinue": false,
+   "optionsSuccessStatus": 204
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 defineRoutes(app);
 setupDb().catch(console.error);
 initConnections().then(() => {
-   app.listen(process.env.PORT, () => {
+   app.listen(parseInt(process.env.PORT!), '0.0.0.0', () => {
 
       console.log(`listening on port ${process.env.PORT}`);
       return getNodeD9Address();
