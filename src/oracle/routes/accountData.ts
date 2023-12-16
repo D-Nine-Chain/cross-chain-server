@@ -23,7 +23,7 @@ export async function getAccountDataRoute(req: Request, res: Response): Promise<
          return Promise.all([tronAllowancePromise, tronBalancePromise, d9AllowancePromise, d9BalancePromise])
       })
       .then(([tronAllowance, tronBalance, d9Allowance, d9Balance]) => {
-         res.status(200).send({
+         res.send({
             success: true,
             data: {
                tron: {
