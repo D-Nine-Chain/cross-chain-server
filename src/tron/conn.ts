@@ -6,11 +6,13 @@ export async function getTronWeb() {
    if (tronWeb) {
       return tronWeb;
    } else {
-      return getSecret('TRON_NODE_KEY')
-         .then((privateKey) => {
+
+      return Promise.all([getSecret('TRON_NODE_KEY'), getSecret('TRON_API_KEY')])
+         .then(([privateKey, apiKey]) => {
+            console.log("api key ", apiKey)
             tronWeb = new TronWeb({
                fullHost: process.env.TRON_ENDPOINT,
-               headers: { "TRON-PRO-API-KEY": process.env.TRON_API_KEY },
+               headers: { "TRON-PRO-API-KEY": apiKey },
                privateKey: privateKey
             })
             return tronWeb;
