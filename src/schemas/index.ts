@@ -88,3 +88,36 @@ export const TronDispatchSchema = z.object({
 export const D9Address = z.string().refine((data) =>
    validateAddress("D9", data), { message: "Invalid D9 address" }
 )
+
+export const AccountRequestSchema = z.object({
+   tronAddress: z.string().min(21, "Tron address is required"),
+   d9Address: z.string().min(47, "D9 address is required"),
+})
+   .superRefine(async (data, ctx) => {
+      if (!data.tronAddress.startsWith("T") || data.tronAddress.length != 34) {
+         ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid Tron address',
+            path: ['tronAddress'],
+         })
+      }
+      try {
+         await validateAddress("D9", data.d9Address);
+
+      } catch (e) {
+         ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid D9 address',
+            path: ['d9Address'],
+         })
+      }
+      try {
+         await validateAddress("TRON", data.tronAddress);
+      } catch (e) {
+         ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid Tron address',
+            path: ['tronAddress'],
+         })
+      }
+   })

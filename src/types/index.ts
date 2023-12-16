@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ChainEnum, CommitSchema, D9CommitSchema, DispatchSchema, AddressBytesForTron, D9DispatchSchema, TronCommitSchema, TronDispatchSchema } from "../schemas";
+import { ChainEnum, CommitSchema, D9CommitSchema, DispatchSchema, AddressBytesForTron, D9DispatchSchema, TronCommitSchema, TronDispatchSchema, AccountRequestSchema } from "../schemas";
 import type { WeightV2 } from '@polkadot/types/interfaces'
 
 export type ChainEnum = z.infer<typeof ChainEnum>;
@@ -23,3 +23,17 @@ export interface GasLimits {
    writeLimit: WeightV2,
 }
 
+export type AccountRequest = z.infer<typeof AccountRequestSchema>;
+
+export type AccountResponse = {
+   d9: {
+      address: string,
+      balance: number,
+      allowance: number,
+   },
+   tron: {
+      address: string,
+      balance: number,
+      allowance: number,
+   }
+}
